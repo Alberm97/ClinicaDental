@@ -1,3 +1,5 @@
+package ClinicaDental;
+
 import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,12 +18,11 @@ public class Ficheros {
         ArrayList<String> hombres = new ArrayList<String>();
         ArrayList<String> mujeres = new ArrayList<String>();
         ArrayList<String> apellidos = new ArrayList<String>();
-        hombres = ficheros ("C:\\Users\\Alber\\Desktop\\NOMBRES\\hombres.txt");
-        mujeres = ficheros ("C:\\Users\\Alber\\Desktop\\NOMBRES\\mujeres.txt");
-        apellidos = ficheros ("C:\\Users\\Alber\\Desktop\\NOMBRES\\apellidos.txt");
+        hombres = ficheros ("C:\\Users\\AlbertoMonteroVera\\Desktop\\NOMBRES\\hombres.txt");
+        mujeres = ficheros ("C:\\Users\\AlbertoMonteroVera\\Desktop\\NOMBRES\\mujeres.txt");
+        apellidos = ficheros ("C:\\Users\\AlbertoMonteroVera\\Desktop\\NOMBRES\\apellidos.txt");
 
         ArrayList<String> DNIs = DNIs();
-
         Pacientes(hombres, mujeres, apellidos, DNIs);
     }
 
@@ -83,11 +84,11 @@ public class Ficheros {
     public static void Pacientes (ArrayList<String> hombres, ArrayList<String> mujeres, ArrayList<String> apellidos,ArrayList<String> DNIs){
 
         try{
-            FileWriter fw = new FileWriter("C:\\Users\\Alber\\Desktop\\NOMBRES\\pacientes.txt");
+            FileWriter fw = new FileWriter("C:\\Users\\AlbertoMonteroVera\\Desktop\\NOMBRES\\pacientes.txt");
             DNIs();
             //for que añade a 3000 veces a pacientes
             for(int i = 0; i < 2999; i++){
-                //numero que se usa para manejar la proporcion de hombres y mujeres
+                //numero que se usa para manejar la proporcion de hombres y mujeres (56% para mujeres, 44% para hombres)
                 int HombreOMujer = Numaleatorio(1, 100);
                 String nombre;
                 if(HombreOMujer >= 56) {
@@ -101,6 +102,7 @@ public class Ficheros {
                     fw.write('M');
 
                 }
+
                 fw.write(';');
                 fw.write(nombre);
                 fw.write(';');
@@ -134,11 +136,19 @@ public class Ficheros {
 //Este método nos crea un número de DNI aleatorio con la letra incluida
 
     public static String CrearDNI() {
-        //Se generan los 8 numeros, y se le añade la letra final según su resto
-        int numero = Numaleatorio(100000000, 999999999);
-        char [] letras = {'T','R','W','A','G','M','Y','F','P','D','X','B','N','J','Z','S','Q','V','H','L','C','K','E'};
-        char letra = letras[numero%23];
-        String dni = String.valueOf(numero)+letra;
+        ArrayList dniLista = new ArrayList();
+        int numer = 0;
+        char letra;
+        String dni = "";
+        char[] letras = { 'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X',
+                'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E' };
+
+        do {
+            numer = Numaleatorio(0, 99999999);
+        } while (dniLista.contains(numer));
+        dniLista.add(numer);
+        letra = letras[numer % 23];
+        dni = String.format("%08d", numer) + letra;
         return dni;
     }
 
